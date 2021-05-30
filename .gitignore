@@ -1,5 +1,6 @@
-*/__pychace__
-__pychace__/*
-
 .venv
+
+.vscode
+
+tensorboard
 
