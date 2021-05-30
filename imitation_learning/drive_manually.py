@@ -9,6 +9,8 @@ import os
 from datetime import datetime
 import gzip
 import json
+import glob
+import re
 
 
 def key_press(k, mod):
@@ -25,13 +27,25 @@ def key_release(k, mod):
     if k == key.UP:    a[1] = 0.0
     if k == key.DOWN:  a[2] = 0.0
 
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [atoi(c) for c in re.split(r"(\d+)", text)]
 
 def store_data(data, datasets_dir="./data"):
     # save data
+    file_names = glob.glob(os.path.join(datasets_dir, "*.gzip"))
+    file_names.sort(key=natural_keys)
+    if not file_names:
+        new_index = 0
+    else:
+        last_index = int(re.split(r"(\d+)", file_names[-1])[1])
+        new_index = last_index + 1
     if not os.path.exists(datasets_dir):
         os.mkdir(datasets_dir)
-    data_file = os.path.join(datasets_dir, 'data.pkl.gzip')
-    f = gzip.open(data_file,'wb')
+    data_file = os.path.join(datasets_dir, "data%s.pkl.gzip" % new_index)
+    f = gzip.open(data_file, "wb")
     pickle.dump(data, f)
 
 
