@@ -42,7 +42,7 @@ class CNN(nn.Module):
             nn.LeakyReLU(negative_slope=0.01),
         )
         # --- use the line below and test bc_agent to find out the output of conv
-        summary(self.cnn_block, (history_length + 1, 96, 96))
+        # summary(self.cnn_block, (history_length + 1, 96, 96))
 
         # --- these are the result of the above convolution ---
         w = 16
