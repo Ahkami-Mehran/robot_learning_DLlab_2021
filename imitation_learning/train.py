@@ -96,8 +96,10 @@ def train_model(X_train, y_train, X_valid, y_valid, n_minibatches, batch_size, l
     
     # create result and model folders
     timestamp = datetime.now().strftime("%Y-%m-%d--%H-%M")
-    modelfilename = os.path.join(model_dir, f'agent_{timestamp}.pt')
-    writer = SummaryWriter(log_dir=f'{tensorboard_dir}/experiment_{timestamp}')
+    # modelfilename = os.path.join(model_dir, f'agent_{timestamp}.pt')
+    modelfilename = os.path.join(model_dir, 'agent_{}.pt'.format(timestamp))
+    # writer = SummaryWriter(log_dir=f'{tensorboard_dir}/experiment_{timestamp}')
+    writer = SummaryWriter(log_dir='{}/experiment_{}'.format(tensorboard_dir, timestamp))
 
     if not os.path.exists(model_dir):
         os.mkdir(model_dir)  
@@ -129,7 +131,8 @@ def train_model(X_train, y_train, X_valid, y_valid, n_minibatches, batch_size, l
     training_loss = 0
     step = 0
     for epoch in range(config.epochs):
-        print(f'\n=== Epoch: {epoch + 1} ===')
+        # print(f'\n=== Epoch: {epoch + 1} ===')
+        print('\n=== Epoch: {} ==='.format(epoch + 1))
 
         trainloader = create_data_loader(X_train, y_train, batch_size=batch_size)
         # --- batch training ---
@@ -166,7 +169,8 @@ def train_model(X_train, y_train, X_valid, y_valid, n_minibatches, batch_size, l
     # --- closing and saving ---
     writer.close()
     agent.save(modelfilename)
-    print(f'Model saved in file: {modelfilename}')
+    # print(f'Model saved in file: {modelfilename}')
+    print('Model saved in file: {}'.format(modelfilename))
 
     # TODO: implement the training
     # 
