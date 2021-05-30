@@ -41,9 +41,8 @@ def read_data_generator(datasets_dir="../data", frac=0.1, is_fcn=True):
         f = gzip.open(data_file, 'rb')
         data = pickle.load(f)
         n_samples = len(data["state"])
-        # Hint: to access images use state_img here!
-        X.extend(data["state"])
 
+        X.extend(data["state"])
         y.extend(data["action"])
 
         X = np.array(X).astype("float32")

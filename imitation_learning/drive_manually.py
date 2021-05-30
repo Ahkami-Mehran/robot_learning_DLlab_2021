@@ -111,11 +111,11 @@ if __name__ == "__main__":
             state = next_state
             steps += 1
 
-            if steps % 1000 == 0 or done:
+            if steps % 500 == 0 or done:
                 print("\naction " + str(["{:+0.2f}".format(x) for x in a]))
                 print("\nstep {}".format(steps))
 
-            if args.collect_data and steps % 5000 == 0:
+            if args.collect_data and steps % 2500 == 0:
                 print('... saving data')
                 store_data(samples, "./data")
                 save_results(episode_rewards, "./results")
