@@ -31,12 +31,11 @@ def read_labels_generator(datasets_dir='../data'):
 
 
 def read_data_generator(datasets_dir="../data", frac=0.1, is_fcn=True):
-    print(f'\nreading  data from {datasets_dir}')
+    print('\nreading data from {}'.format(datasets_dir))
     file_names = glob.glob(os.path.join(datasets_dir, "*.gzip"))
-    print(f'files: {file_names}')
 
     for data_file in file_names:
-        print(f'\n--- current file: {data_file} ---')
+        print('\n--- current file: {} ---'.format(data_file))
         X = []
         y = []
         f = gzip.open(data_file, 'rb')
@@ -86,7 +85,7 @@ def read_data_generator(datasets_dir="../data", frac=0.1, is_fcn=True):
 #     return X_train, y_train, X_valid, y_valid
 
 def skip_frames(input_data, input_label, skip_no, history_length):
-    assert skip_no > 0, f'config.skip_n: {skip_no}. Must be > 0'
+    assert skip_no > 0, 'config.skip_n: {}. Must be > 0'.format(skip_no)
     N_train = input_data.shape[0]
     skipped_data = []
     skipped_label = []
@@ -240,8 +239,8 @@ def create_data_loader(X, y, batch_size, shuffle=True):
 def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./tensorboard"):
     tb_saving_res = 3
     timestamp = datetime.now().strftime("%Y-%m-%d--%H-%M")
-    modelfilename = os.path.join(model_dir, f'agent_{timestamp}.pt')
-    writer = SummaryWriter(log_dir=f'{tensorboard_dir}/experiment_{timestamp}')
+    modelfilename = os.path.join(model_dir, 'agent_{}.pt'.format(timestamp))
+    writer = SummaryWriter(log_dir='{}/experiment_{}'.format(tensorboard_dir, timestamp))
     if not os.path.exists(model_dir): os.mkdir(model_dir)
 
     # --- write configuration ---
@@ -257,7 +256,7 @@ def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./t
 
     # --- agent setup ---
     class_weights = calculate_weights(datasets_dir=datasets_dir)
-    print(f'Class weights: {class_weights.squeeze()}')
+    print('Class weights: {}'.format(class_weights.squeeze()))
     agent = BCAgent(config, weights=None)
     agent.train_mode()
     agent.to_device()
@@ -270,7 +269,7 @@ def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./t
     step = 0
     n_minibatches = calculate_n_minibatches(datasets_dir, config)
     for epoch in range(config.n_epochs):
-        print(f'\n=== Epoch: {epoch + 1} ===')
+        print('\n=== Epoch: {} ==='.format(epoch + 1))
         data_file_generator = read_data_generator(datasets_dir=datasets_dir,
                                                   frac=config.validation_frac,
                                                   is_fcn=config.is_fcn)
@@ -318,7 +317,7 @@ def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./t
     # --- closing and saving ---
     writer.close()
     agent.save(modelfilename)
-    print(f'Model saved in file: {modelfilename}')
+    print('Model saved in file: {}'.format(modelfilename))
 
 
 if __name__ == "__main__":
