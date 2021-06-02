@@ -199,8 +199,7 @@ def calculate_weights(datasets_dir):
             counts[i] = np.count_nonzero(labels == c)
         weights = 1.0 / counts
         weights = weights / np.linalg.norm(weights, ord=1)  # normalization
-        side_engine_weights = (weights[1] +
-                               weights[3]) / 2  # same weights for side engines
+        side_engine_weights = (weights[1] + weights[3]) / 2  # same weights for side engines
         weights[1] = weights[3] = side_engine_weights
         weight_list.append(weights)
     return torch.Tensor(weight_list).mean(dim=0).view(-1, 1)

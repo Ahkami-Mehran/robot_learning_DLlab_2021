@@ -97,6 +97,13 @@ if __name__ == "__main__":
     while True:
         episode_reward = 0
         state = env.reset()
+        samples = {
+            "state": [],
+            "next_state": [],
+            "reward": [],
+            "action": [],
+            "terminal" : [],
+        }
         while True:
 
             next_state, r, done, info = env.step(a)
