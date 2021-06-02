@@ -5,7 +5,7 @@ class Config:
 
     ## Optimzation
     learning_rate = 5e-5
-    batch_size = 16
+    batch_size = 32
     n_epochs = 10
     validation_frac = 0.3
 
