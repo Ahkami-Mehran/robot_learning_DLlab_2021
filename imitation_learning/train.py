@@ -250,8 +250,8 @@ def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./t
     writer.add_text(tag='configuration', text_string=str(conf_dict))
 
     # --- agent setup ---
-    class_weights = calculate_weights(datasets_dir=datasets_dir)
-    print('Class weights: {}'.format(class_weights.squeeze()))
+    # class_weights = calculate_weights(datasets_dir=datasets_dir)
+    # print('Class weights: {}'.format(class_weights.squeeze()))
     agent = BCAgent(config, weights=None)
     agent.train_mode()
     agent.to_device()
@@ -317,5 +317,5 @@ def train_model(datasets_dir, config, model_dir="./models", tensorboard_dir="./t
 
 if __name__ == "__main__":
     conf = Config()
-    datasets_dir = './data'
+    datasets_dir = '../data'
     train_model(datasets_dir=datasets_dir, config=conf)
