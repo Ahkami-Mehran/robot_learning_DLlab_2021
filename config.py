@@ -1,6 +1,6 @@
 class Config:
     ## Frames
-    skip_frames = 3
+    skip_frames = 1
     history_length = 0
 
     ## Optimzation
