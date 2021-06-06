@@ -1,12 +1,12 @@
 class Config:
     ## Frames
-    skip_frames = 1
-    history_length = 0
+    skip_frames = 4
+    history_length = 5
 
     ## Optimzation
     learning_rate = 5e-5
     batch_size = 32
-    n_epochs = 10
+    n_epochs = 30
     validation_frac = 0.3
 
     ## testing
