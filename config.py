@@ -1,7 +1,6 @@
 class Config:
-    ## Frames
-    skip_frames = 4
-    history_length = 5
+    skip_frames = 2 # 4 next 
+    history_length = 0 # 1 3 5 1 3 5
 
     ## Optimzation
     learning_rate = 5e-5

@@ -6,8 +6,10 @@ import gym
 import itertools as it
 from agent.dqn_agent import DQNAgent
 from tensorboard_evaluation import *
-from agent.networks import MLP
-from utils import EpisodeStats
+from agent.networks import MLP, DQN_CNN
+from utils import EpisodeStats, get_screen
+from collections import namedtuple, deque
+
 
 
 def run_episode(env, agent, deterministic, do_training=True, rendering=False, max_timesteps=1000):
@@ -43,7 +45,7 @@ def run_episode(env, agent, deterministic, do_training=True, rendering=False, ma
 
     return stats
 
-def train_online(env, agent, num_episodes, model_dir="./models_cartpole", tensorboard_dir="./tensorboard"):
+def train_online(env, agent, num_episodes, num_eval_episodes, eval_cycle, model_dir="./models_cartpole", tensorboard_dir="./tensorboard"):
     if not os.path.exists(model_dir):
         os.mkdir(model_dir)  
  
@@ -65,6 +67,13 @@ def train_online(env, agent, num_episodes, model_dir="./models_cartpole", tensor
         # if i % eval_cycle == 0:
         #    for j in range(num_eval_episodes):
         #       ...
+        if i % eval_cycle == 0:
+            for j in range(num_eval_episodes):
+                run_episode(env, agent, deterministic=True, do_training=False)
+                tensorboard.write_episode_data(i + j, eval_dict={  "episode_reward_eval" : stats.episode_reward, 
+                                                                "a_0_eval" : stats.get_action_usage(0),
+                                                                "a_1_eval" : stats.get_action_usage(1)})
+
         
         # store model.
         if i % eval_cycle == 0 or i >= (num_episodes - 1):
@@ -75,6 +84,7 @@ def train_online(env, agent, num_episodes, model_dir="./models_cartpole", tensor
 
 if __name__ == "__main__":
 
+    num_episodes = 50
     num_eval_episodes = 5   # evaluate on 5 episodes
     eval_cycle = 20         # evaluate every 10 episodes
 
@@ -86,9 +96,16 @@ if __name__ == "__main__":
 
     state_dim = 4
     num_actions = 2
+    # init_screen = get_screen(env)
+    _, _, screen_height, screen_width = [1, 3, 40, 90]
 
     # TODO: 
     # 1. init Q network and target network (see dqn/networks.py)
     # 2. init DQNAgent (see dqn/dqn_agent.py)
     # 3. train DQN agent with train_online(...)
+
+    Q = DQN_CNN(screen_height, screen_width, num_actions)
+    Q_target = DQN_CNN(screen_height, screen_width, num_actions)
+    agent = DQNAgent(Q, Q_target, num_actions)
+    train_online(env, agent, num_episodes. num_eval_episodes, eval_cycle)    
  
